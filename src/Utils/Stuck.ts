@@ -1,3 +1,3 @@
 import { MakeVoid } from 'Utils/MakeVoid';
 
-export type Stuck = MakeVoid<'Stuck'>;
+export interface Stuck extends MakeVoid<'Stuck'> {};
