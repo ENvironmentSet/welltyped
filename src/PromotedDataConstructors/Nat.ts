@@ -3,7 +3,7 @@ import { Stuck } from 'Utils/Stuck';
 import { MakeVoid } from 'Utils/MakeVoid';
 
 export interface Z extends MakeVoid<'Z'> {};
-type _S<Nat> = PhantomTypeParameter<'Nat', Nat>;
+type _S<Nat> = PhantomTypeParameter<'S/Nat', Nat>;
 export interface S<Nat> extends _S<Nat> {};
 
 export type Add<X, Y> = {
