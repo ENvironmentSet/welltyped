@@ -6,26 +6,26 @@ export type RawTNil = 'TRawNil';
 export type RawTCons<car, cdr>
   = PhantomTypeParameter<'RawTCons/car', car> & PhantomTypeParameter<'RawTCons/tcdr', cdr>;
 
-export type RawHead<list> = list extends RawTCons<infer car, infer _> ? car : Stuck;
+export type RawHead<rawList> = rawList extends RawTCons<infer car, infer _> ? car : Stuck;
 
-export type RawTail<list> = list extends RawTCons<infer _, infer cdr> ? cdr : Stuck;
+export type RawTail<rawList> = rawList extends RawTCons<infer _, infer cdr> ? cdr : Stuck;
 
-export type RawLast<list> = {
-  base: list extends RawTCons<infer car, infer _> ? car : Stuck;
-  recursiveStep: list extends RawTCons<infer _, infer cdr> ? RawLast<cdr> : Stuck;
+export type RawLast<rawList> = {
+  base: rawList extends RawTCons<infer car, infer _> ? car : Stuck;
+  recursiveStep: rawList extends RawTCons<infer _, infer cdr> ? RawLast<cdr> : Stuck;
   undefined: Stuck;
-}[list extends RawTCons<infer _, infer tcdr> ? tcdr extends RawTNil ? 'base' : 'recursiveStep' : 'undefined'];
+}[rawList extends RawTCons<infer _, infer tcdr> ? tcdr extends RawTNil ? 'base' : 'recursiveStep' : 'undefined'];
 
-export type RawInit<list, result = RawTNil> = {
+export type RawInit<rawList, result = RawTNil> = {
   base: result;
-  recursiveStep: list extends RawTCons<infer car, infer cdr> ? RawInit<cdr, RawTCons<car, result>> : Stuck;
+  recursiveStep: rawList extends RawTCons<infer car, infer cdr> ? RawInit<cdr, RawTCons<car, result>> : Stuck;
   undefined: Stuck;
-}[list extends RawTCons<infer _, infer cdr> ? cdr extends RawTNil ? 'base' : 'recursiveStep' : 'undefined'];
+}[rawList extends RawTCons<infer _, infer cdr> ? cdr extends RawTNil ? 'base' : 'recursiveStep' : 'undefined'];
 
-export type RawLength<list> = {
+export type RawLength<rawList> = {
   base: Z;
   recursiveStep: S<RawLength<RawTail<list>>>
-}[list extends RawTNil ? 'base' : 'recursiveStep'];
+}[rawList extends RawTNil ? 'base' : 'recursiveStep'];
 
 export type RawConcat<xs, ys> = {
   base: ys;
