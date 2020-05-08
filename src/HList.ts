@@ -4,8 +4,8 @@ import { Cons, Nil, AnyTListKind } from 'PromotedDataConstructors';
 type _HList<tlist> = unknown[] & PhantomTypeParameter<'HList/tlist', tlist>
 export interface HList<tlist> extends _HList<tlist> {};
 
-export const nil: HList<Nil> = [] as unknown[] as HList<Nil>;
-export function cons<type, tlist extends AnyTListKind>(x: type, xs: HList<tlist>): HList<Cons<type, tlist>> {
+export const hnil: HList<Nil> = [] as unknown[] as HList<Nil>;
+export function hcons<type, tlist extends AnyTListKind>(x: type, xs: HList<tlist>): HList<Cons<type, tlist>> {
   return [x, ...xs] as HList<Cons<type, tlist>>;
 }
 
