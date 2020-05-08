@@ -1,8 +1,6 @@
 import { Stuck } from 'Utils';
 import { Cons, Nil, AnyTListKind, Head, Tail } from 'PromotedDataConstructors';
 
-//type _HList<tlist> = unknown[] & PhantomTypeParameter<'HList/tlist', tlist>
-//export interface HList<tlist> extends _HList<tlist> {};
 export type HNil = { type: 'HNil' };
 export type HCons<car, cdr extends AnyTListKind> = { type: 'HCons', car: car, cdr: HList<cdr> } & Cons<car, cdr>;
 interface _HList<tlist extends AnyTListKind> {
@@ -25,6 +23,7 @@ export function hcons<type, tlist extends AnyTListKind>(car: type, cdr: HList<tl
 export function hl<tlist extends AnyTListKind>(_: TemplateStringsArray, ...xs: tlist): HList<tlist>;
 export function hl<tlist extends AnyTListKind>(...xs: tlist): HList<tlist>;
 export function hl(x: any, ...xs: any) {
-  if (x?.hasOwnProperty?.('raw') && Object.prototype.toString.call(x.raw) === '[object Array]') return xs;
-  else return [x, ...xs];
+  if (x?.hasOwnProperty?.('raw') && Object.prototype.toString.call(x.raw) === '[object Array]')
+    return xs.reduce(hcons, hnil);
+  else return hcons(x, xs.reduce(hcons, hnil));
 }
