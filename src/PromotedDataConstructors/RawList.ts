@@ -24,7 +24,7 @@ export type RawInit<tlist, result = TRawNil> = {
 
 export type RawLength<tlist> = {
   base: Z;
-  recursiveStep: S<RawLength<Tail<tlist>>>
+  recursiveStep: S<RawLength<RawTail<tlist>>>
 }[tlist extends TRawNil ? 'base' : 'recursiveStep'];
 
 export type RawConcat<xs, ys> = {
