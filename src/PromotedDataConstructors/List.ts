@@ -40,3 +40,5 @@ export type Length<list extends AnyTListKind> = RawLength<ToRawList<list>>;
 
 export type Concat<xs extends AnyTListKind, ys extends AnyTListKind>
   = FromRawList<RawConcat<ToRawList<xs>, ToRawList<ys>>>;
+
+export type Cons<car, cdr extends AnyTListKind> = FromRawList<RawTCons<car, ToRawList<cdr>>>
