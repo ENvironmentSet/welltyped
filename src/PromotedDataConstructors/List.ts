@@ -1,33 +1,42 @@
-import { PhantomTypeParameter } from 'Utils/PhantomTypeParameter';
-import { Stuck } from 'Utils/Stuck';
-import { Z, S } from 'PromotedDataConstructors/Nat';
+import { Stuck } from 'Utils';
+import {
+  RawTCons, RawTNil,
+  RawHead, RawTail, RawLength,
+  RawInit, RawLast, RawConcat
+} from 'PromotedDataConstructors/RawList';
 
-export type TNil = 'TNil';
-type _TCons<tcar, tcdr> = PhantomTypeParameter<'TCons/tcar', tcar> & PhantomTypeParameter<'TCons/tcdr', tcdr>
-export interface TCons<tcar, tcdr> extends _TCons<tcar, tcdr> {};
+export type AnyTListKind = unknown[];
 
-export type Head<tlist> = tlist extends TCons<infer tcar, infer _> ? tcar : Stuck;
+// Inspired by $mol_type https://github.com/eigenmethod/mol/tree/master/type
+export type ToRawList<list extends AnyTListKind> = {
+  base: RawTNil;
+  recursiveStep: ((...tlist: list) => never) extends ((car: infer car, ...cdr: infer cdr) => never) ?
+    RawTCons<car, ToRawList<cdr>>
+    : Stuck;
+}[list extends [] ? 'base' : 'recursiveStep'];
 
-export type Tail<tlist> = tlist extends TCons<infer _, infer tcdr> ? tcdr : Stuck;
+export type FromRawList<rawList, base extends AnyTListKind = []> = {
+  base: base;
+  recursiveStep: rawList extends RawTCons<infer car, infer rawCdr> ?
+    FromRawList<rawCdr> extends infer cdr ?
+      cdr extends AnyTListKind ?
+        ((car: car, ..._cdr: cdr) => never) extends ((...list: infer list) => never) ?
+          list
+          : Stuck
+        : Stuck
+      : Stuck
+    : Stuck;
+}[rawList extends RawTNil ? 'base' : 'recursiveStep'];
 
-export type Last<tlist> = {
-  base: tlist extends TCons<infer last, infer _> ? last : Stuck;
-  recursiveStep: tlist extends TCons<infer _, infer tcdr> ? Last<tcdr> : Stuck;
-  undefined: Stuck;
-}[tlist extends TCons<infer _, infer tcdr> ? tcdr extends TNil ? 'base' : 'recursiveStep' : 'undefined'];
+export type Head<list extends AnyTListKind> = RawHead<ToRawList<list>>;
 
-export type Init<tlist, result = TNil> = {
-  base: result;
-  recursiveStep: tlist extends TCons<infer tcar, infer tcdr> ? Init<tcdr, TCons<tcar, result>> : Stuck;
-  undefined: Stuck;
-}[tlist extends TCons<infer _, infer tcdr> ? tcdr extends TNil ? 'base' : 'recursiveStep' : 'undefined'];
+export type Tail<list extends AnyTListKind> = FromRawList<RawTail<ToRawList<list>>>;
 
-export type Length<tlist> = {
-  base: Z;
-  recursiveStep: S<Length<Tail<tlist>>>
-}[tlist extends TNil ? 'base' : 'recursiveStep'];
+export type Last<list extends AnyTListKind> = RawLast<ToRawList<list>>;
 
-export type Concat<xs, ys> = {
-  base: ys;
-  recursiveStep: xs extends TCons<infer tcar, infer tcdr> ? TCons<tcar, Concat<tcdr, ys>> : Stuck;
-}[xs extends TNil ? 'base' : 'recursiveStep'];
+export type Init<list extends AnyTListKind> = FromRawList<RawInit<ToRawList<list>>>;
+
+export type Length<list extends AnyTListKind> = RawLength<ToRawList<list>>;
+
+export type Concat<xs extends AnyTListKind, ys extends AnyTListKind>
+  = FromRawList<RawConcat<ToRawList<xs>, ToRawList<ys>>>;
