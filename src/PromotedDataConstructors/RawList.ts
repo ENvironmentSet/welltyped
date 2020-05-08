@@ -2,7 +2,7 @@ import { PhantomTypeParameter } from 'Utils/PhantomTypeParameter';
 import { Stuck } from 'Utils/Stuck';
 import { Z, S } from 'PromotedDataConstructors/Nat';
 
-export type RawTNil = 'TRawNil';
+export type RawTNil = 'RawTNil';
 export type RawTCons<car, cdr>
   = PhantomTypeParameter<'RawTCons/car', car> & PhantomTypeParameter<'RawTCons/tcdr', cdr>;
 
