@@ -3,8 +3,9 @@ import { Stuck } from 'Utils/Stuck';
 import { Z, S } from 'PromotedDataConstructors/Nat';
 
 export type RawTNil = 'RawTNil';
-export type RawTCons<car, cdr>
+type _RawTCons<car, cdr>
   = PhantomTypeParameter<'RawTCons/car', car> & PhantomTypeParameter<'RawTCons/tcdr', cdr>;
+export interface RawTCons<car, cdr> extends _RawTCons<car, cdr> {};
 
 export type RawHead<rawList> = rawList extends RawTCons<infer car, infer _> ? car : Stuck;
 

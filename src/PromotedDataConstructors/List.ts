@@ -11,12 +11,14 @@ export type AnyTListKind = unknown[];
 export type ToRawList<list extends AnyTListKind> = {
   base: RawTNil;
   recursiveStep: ((...tlist: list) => never) extends ((car: infer car, ...cdr: infer cdr) => never) ?
-    RawTCons<car, ToRawList<cdr>>
+    ToRawList<cdr> extends infer rawCdr ?
+      RawTCons<car, rawCdr>
+      : Stuck
     : Stuck;
 }[list extends [] ? 'base' : 'recursiveStep'];
 
-export type FromRawList<rawList, base extends AnyTListKind = []> = {
-  base: base;
+export type FromRawList<rawList> = {
+  base: [];
   recursiveStep: rawList extends RawTCons<infer car, infer rawCdr> ?
     FromRawList<rawCdr> extends infer cdr ?
       cdr extends AnyTListKind ?
@@ -43,4 +45,5 @@ export type Concat<xs extends AnyTListKind, ys extends AnyTListKind>
 
 export type Cons<car, cdr extends AnyTListKind> = FromRawList<RawTCons<car, ToRawList<cdr>>>
 
-export type Nil = [];
+type _Nil = [];
+export interface Nil extends _Nil {};
