@@ -5,3 +5,7 @@ export interface HKT<paramKind = Type, resultKind = Type> {
   result: resultKind;
   failed: boolean;
 }
+
+export interface TotalHKT<paramKind = Type, resultKind = Type> extends HKT<paramKind, resultKind> {
+  failed: false;
+}
