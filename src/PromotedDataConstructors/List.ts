@@ -7,6 +7,9 @@ import { Z, S } from 'PromotedDataConstructors/Nat';
 
 export type AnyList = Array<Type>;
 
+type Nil_ = [];
+export interface Nil extends Nil_ {}
+
 export interface IsEmpty extends HKT {
   result: this['param'] extends [] ? true : false;
 }
