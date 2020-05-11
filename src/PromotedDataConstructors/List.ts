@@ -54,6 +54,20 @@ export interface Filter extends HKT {
   : Stuck;
 }
 
+export interface Map extends HKT {
+  result: this['param'] extends [infer f, infer list] ? {
+      base: [],
+      recursiveStep: f extends HKT ?
+        list extends AnyList ?
+          Apply<Map, [f, Apply<Tail, list>]> extends infer xs ?
+            Apply<Cons, [Apply<f, Apply<Head, list>>, xs]>
+            : Stuck
+          : Stuck
+        : Stuck
+    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+    : Stuck;
+}
+
 export interface Concat extends HKT {
   result: this['param'] extends [infer xs, infer ys] ? {
       base: ys,
