@@ -1,17 +1,22 @@
-import { PhantomTypeParameter } from 'Utils';
-import { Cons, Nil, AnyTListKind } from 'PromotedDataConstructors';
+import { Cons, Head, AnyList, Tail } from 'PromotedDataConstructors/List';
+import { Apply } from 'Utils/Apply';
 
-type _HList<tlist> = unknown[] & PhantomTypeParameter<'HList/tlist', tlist>
-export interface HList<tlist> extends _HList<tlist> {};
-
-export const hnil: HList<Nil> = [] as unknown[] as HList<Nil>;
-export function hcons<type, tlist extends AnyTListKind>(x: type, xs: HList<tlist>): HList<Cons<type, tlist>> {
-  return [x, ...xs] as HList<Cons<type, tlist>>;
+export const hnil = [] as [];
+export function hcons<type, tlist extends AnyList>(x: type, xs: tlist): Apply<Cons, [type, tlist]> {
+  return [x, ...xs] as Apply<Cons, [type, tlist]>;
 }
 
-export function hl<tlist extends AnyTListKind>(_: TemplateStringsArray, ...xs: tlist): HList<tlist>;
-export function hl<tlist extends AnyTListKind>(...xs: tlist): HList<tlist>;
+export function hl<tlist extends AnyList>(_: TemplateStringsArray, ...xs: tlist): tlist;
+export function hl<tlist extends AnyList>(...xs: tlist): tlist;
 export function hl(x: any, ...xs: any) {
   if (x?.hasOwnProperty?.('raw') && Object.prototype.toString.call(x.raw) === '[object Array]') return xs;
   else return [x, ...xs];
+}
+
+export function head<tlist extends AnyList>([x]: tlist): Apply<Head, tlist> {
+  return x as Apply<Head, tlist>;
+}
+
+export function tail<tlist extends AnyList>([_, ...xs]: tlist): Apply<Tail, tlist> {
+  return xs as Apply<Tail, tlist>;
 }
