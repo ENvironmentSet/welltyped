@@ -13,7 +13,7 @@ export interface TotalHKT<paramKind = Type, resultKind = Type> extends HKT<param
 }
 
 interface GetHKTInfos extends TotalHKT<[HKT, 'param' | 'result']> {
-  result: this['param'] extends 'result' ?
+  result: this['param'][1] extends 'result' ?
       this['param'][0]['_unstableResultKind']
     : this['param'][0][this['param'][1]];
 }
