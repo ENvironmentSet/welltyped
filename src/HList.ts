@@ -1,4 +1,4 @@
-import { Cons, Head, AnyList, Tail } from 'PromotedDataConstructors/List';
+import { Cons, Head, AnyList, Tail, Concat } from 'PromotedDataConstructors/List';
 import { Apply } from 'Utils/Apply';
 
 export const hnil = [] as [];
@@ -19,4 +19,8 @@ export function head<tlist extends AnyList>([x]: tlist): Apply<Head, tlist> {
 
 export function tail<tlist extends AnyList>([_, ...xs]: tlist): Apply<Tail, tlist> {
   return xs as Apply<Tail, tlist>;
+}
+
+export function concat<xs extends AnyList, ys extends AnyList>(xs: xs, ys: ys): Apply<Concat, [xs, ys]> {
+  return xs.concat(ys) as Apply<Concat, [xs, ys]>;
 }
