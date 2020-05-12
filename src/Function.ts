@@ -7,6 +7,7 @@ import { HKT } from 'Utils/HKT';
 
 export type AnyFunction = (...args: never) => unknown;
 
+//@FIXME: Wrong typing, can't cover all function.
 export type Curried<f extends AnyFunction> = {
   base: Apply<Length, Parameters<f>> extends Z ? ReturnType<f> : ((...args: Parameters<f>) => ReturnType<f>);
   recursiveStep: Parameters<f> extends infer params ?
