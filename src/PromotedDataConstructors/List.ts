@@ -22,6 +22,22 @@ export interface Tail extends HKT {
     : Stuck;
 }
 
+export interface Last extends HKT {
+  result: this['param'] extends infer list ? {
+      base: Apply<Head, list>;
+      recursiveStep: Apply<Last, Apply<Tail, list>>;
+    }[Apply<If, [Apply<Length, list> extends S<Z> ? true : false, 'base', 'recursiveStep']>]
+    : Stuck
+}
+
+export interface Init extends HKT {
+  result: this['param'] extends infer list ? {
+      base: [];
+      recursiveStep: Apply<Cons, [Apply<Head, list>, Apply<Init, Apply<Tail, list>>]>;
+    }[Apply<If, [Apply<Length, list> extends S<Z> ? true : false, 'base', 'recursiveStep']>]
+    : Stuck
+}
+
 export interface Length extends HKT {
   result: this['param'] extends infer list ? {
       base: Z;
@@ -68,6 +84,18 @@ export interface Map extends HKT {
     : Stuck;
 }
 
+export interface Reduce extends HKT {
+  result: this['param'] extends [infer f, infer base, infer list] ? {
+      base: base,
+      recursiveStep: f extends HKT ?
+        list extends AnyList ?
+          Apply<Reduce, [f, Apply<f, [base, Apply<Head, list>]>, Apply<Tail, list>]>
+          : Stuck
+        : Stuck
+    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+    : Stuck;
+}
+
 export interface Concat extends HKT {
   result: this['param'] extends [infer xs, infer ys] ? {
       base: ys,
@@ -78,4 +106,12 @@ export interface Concat extends HKT {
         : Stuck
     }[Apply<If, [Apply<IsEmpty, xs>, 'base', 'recursiveStep']>]
     : Stuck;
+}
+
+export interface Reverse extends HKT {
+  result: this['param'] extends infer list ? {
+      base: [];
+      recursiveStep: Apply<Cons, [Apply<Last, list>, Apply<Reverse, Apply<Init, list>>]>;
+    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+    : Stuck
 }
