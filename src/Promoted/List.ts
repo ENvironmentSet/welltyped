@@ -2,8 +2,8 @@ import { Stuck } from 'Utils/Stuck';
 import { Type } from 'Utils/Type';
 import { HKT } from 'Utils/HKT';
 import { Apply } from 'Utils/Apply';
-import { If } from 'PromotedDataConstructors/Bool';
-import { Z, S, Nat } from 'PromotedDataConstructors/Nat';
+import { If } from 'Promoted/Bool';
+import { Z, S, Nat } from 'Promoted/Nat';
 import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
 
 export type AnyList = Array<Type>;

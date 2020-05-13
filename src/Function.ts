@@ -1,6 +1,6 @@
-import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Last, Cons } from 'PromotedDataConstructors/List';
+import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Last, Cons } from 'Promoted/List';
 import { hnil } from 'HList';
-import { Z, S } from 'PromotedDataConstructors/Nat';
+import { Z, S } from 'Promoted/Nat';
 import { Stuck } from 'Utils/Stuck';
 import { Apply } from 'Utils/Apply';
 import { HKT } from 'Utils/HKT';

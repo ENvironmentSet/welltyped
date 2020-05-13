@@ -1,7 +1,7 @@
 import { HKT } from 'Utils/HKT';
 import { Stuck } from 'Utils/Stuck';
 import { Apply } from 'Utils/Apply';
-import { Reverse } from 'PromotedDataConstructors/List';
+import { Reverse } from 'Promoted/List';
 
 interface Flipped<f extends HKT> extends HKT {
   result: Apply<f, Apply<Reverse, this['param']>>;
