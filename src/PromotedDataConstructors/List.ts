@@ -3,115 +3,132 @@ import { Type } from 'Utils/Type';
 import { HKT } from 'Utils/HKT';
 import { Apply } from 'Utils/Apply';
 import { If } from 'PromotedDataConstructors/Bool';
-import { Z, S } from 'PromotedDataConstructors/Nat';
+import { Z, S, Nat } from 'PromotedDataConstructors/Nat';
+import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
 
 export type AnyList = Array<Type>;
 
-export interface IsEmpty extends HKT {
+interface _IsEmpty extends HKT {
   result: this['param'] extends [] ? true : false;
 }
+export type IsEmpty<param = UnInitialized> = DeriveGeneric<_IsEmpty, param>;
 
-export interface Head extends HKT {
-  result: this['param'] extends AnyList ? Apply<If, [Apply<IsEmpty, this['param']>, Stuck, this['param'][0]]> : Stuck;
+interface _Head extends HKT {
+  result: this['param'] extends AnyList ? If<[IsEmpty<this['param']>, Stuck, this['param'][0]]> : Stuck;
 }
+export type Head<param = UnInitialized> = DeriveGeneric<_Head, param>;
 
-export interface Tail extends HKT {
+interface _Tail extends HKT {
   result: this['param'] extends AnyList ?
       ((..._: this['param']) => never) extends (_: infer _, ...tail: infer tail) => never ? tail
         : Stuck
     : Stuck;
 }
+export type Tail<param = UnInitialized> = DeriveGeneric<_Tail, param>;
 
-export interface Last extends HKT {
+interface _Last extends HKT {
   result: this['param'] extends infer list ? {
-      base: Apply<Head, list>;
-      recursiveStep: Apply<Last, Apply<Tail, list>>;
-    }[Apply<If, [Apply<Length, list> extends S<Z> ? true : false, 'base', 'recursiveStep']>]
+      base: Head<list>;
+      recursiveStep: Last<Tail<list>>;
+    }[If<[Length<list> extends S<Z> ? true : false, 'base', 'recursiveStep']>]
     : Stuck
 }
+export type Last<param = UnInitialized> = DeriveGeneric<_Last, param>;
 
-export interface Init extends HKT {
+interface _Init extends HKT {
   result: this['param'] extends infer list ? {
       base: [];
-      recursiveStep: Apply<Cons, [Apply<Head, list>, Apply<Init, Apply<Tail, list>>]>;
-    }[Apply<If, [Apply<Length, list> extends S<Z> ? true : false, 'base', 'recursiveStep']>]
+      recursiveStep: Cons<[Head<list>, Init<Tail<list>>]>;
+    }[If<[Length<list> extends S<Z> ? true : false, 'base', 'recursiveStep']>]
     : Stuck
 }
+export type Init<param = UnInitialized> = DeriveGeneric<_Init, param>;
 
-export interface Length extends HKT {
+interface _Length extends HKT {
   result: this['param'] extends infer list ? {
       base: Z;
-      recursiveStep: S<Apply<Length, Apply<Tail, list>>>
-    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+      recursiveStep: Length<Tail<list>> extends infer length ?
+        length extends Nat ?
+          S<length>
+          : Stuck
+        : Stuck;
+    }[If<[IsEmpty<list>, 'base', 'recursiveStep']>]
     : Stuck
 }
+export type Length<param = UnInitialized> = DeriveGeneric<_Length, param>;
 
-export interface Cons extends HKT {
+interface _Cons extends HKT {
   result: this['param'] extends [infer car, infer cdr] ?
     cdr extends AnyList ?
       ((car: car, ...cdr: cdr) => never) extends (..._: infer consed) => never ? consed : Stuck : Stuck : Stuck;
 }
+export type Cons<param = UnInitialized> = DeriveGeneric<_Cons, param>;
 
-export interface Filter extends HKT {
+interface _Filter extends HKT {
   result: this['param'] extends [infer predicate, infer list] ? {
     base: [],
     recursiveStep: predicate extends HKT ?
       list extends AnyList ?
-        Apply<If, [
-          Apply<predicate, Apply<Head, list>>,
-          Apply<Filter, [predicate, Apply<Tail, list>]> extends infer xs ?
-            Apply<Cons, [Apply<Head, list>, xs]>
+        If<[
+          Apply<predicate, Head<list>>,
+          Filter<[predicate, Tail<list>]> extends infer xs ?
+            Cons<[Head<list>, xs]>
             : Stuck,
-          Apply<Filter, [predicate, Apply<Tail, list>]>
+          Filter<[predicate, Apply<Tail, list>]>
         ]>
         : Stuck
       : Stuck
-  }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+  }[If<[IsEmpty<list>, 'base', 'recursiveStep']>]
   : Stuck;
 }
+export type Filter<param = UnInitialized> = DeriveGeneric<_Filter, param>;
 
-export interface Map extends HKT {
+interface _Map extends HKT {
   result: this['param'] extends [infer f, infer list] ? {
       base: [],
       recursiveStep: f extends HKT ?
         list extends AnyList ?
-          Apply<Map, [f, Apply<Tail, list>]> extends infer xs ?
-            Apply<Cons, [Apply<f, Apply<Head, list>>, xs]>
+          Map<[f, Tail<list>]> extends infer xs ?
+            Cons<[Apply<f, Head<list>>, xs]>
             : Stuck
           : Stuck
         : Stuck
-    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+    }[If<[IsEmpty<list>, 'base', 'recursiveStep']>]
     : Stuck;
 }
+export type Map<param = UnInitialized> = DeriveGeneric<_Map, param>;
 
-export interface Reduce extends HKT {
+interface _Reduce extends HKT {
   result: this['param'] extends [infer f, infer base, infer list] ? {
       base: base,
       recursiveStep: f extends HKT ?
         list extends AnyList ?
-          Apply<Reduce, [f, Apply<f, [base, Apply<Head, list>]>, Apply<Tail, list>]>
+          Reduce<[f, Apply<f, [base, Head<list>]>, Tail<list>]>
           : Stuck
         : Stuck
-    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+    }[If<[IsEmpty<list>, 'base', 'recursiveStep']>]
     : Stuck;
 }
+export type Reduce<param = UnInitialized> = DeriveGeneric<_Reduce, param>;
 
-export interface Concat extends HKT {
+interface _Concat extends HKT {
   result: this['param'] extends [infer xs, infer ys] ? {
       base: ys,
       recursiveStep: xs extends AnyList ?
         ys extends AnyList ?
-            Apply<Cons, [Apply<Head, xs>, Apply<Concat, [Apply<Tail, xs>, ys]>]>
+            Cons<[Head<xs>, Concat<[Tail<xs>, ys]>]>
           : Stuck
         : Stuck
-    }[Apply<If, [Apply<IsEmpty, xs>, 'base', 'recursiveStep']>]
+    }[If<[IsEmpty<xs>, 'base', 'recursiveStep']>]
     : Stuck;
 }
+export type Concat<param = UnInitialized> = DeriveGeneric<_Concat, param>;
 
-export interface Reverse extends HKT {
+export interface _Reverse extends HKT {
   result: this['param'] extends infer list ? {
       base: [];
-      recursiveStep: Apply<Cons, [Apply<Last, list>, Apply<Reverse, Apply<Init, list>>]>;
-    }[Apply<If, [Apply<IsEmpty, list>, 'base', 'recursiveStep']>]
+      recursiveStep: Cons<[Last<list>, Reverse<Init<list>>]>;
+    }[If<[IsEmpty<list>, 'base', 'recursiveStep']>]
     : Stuck
 }
+export type Reverse<param = UnInitialized> = DeriveGeneric<_Reverse, param>;
