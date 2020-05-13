@@ -1,24 +1,74 @@
-import { Length, Head, Tail, AnyList, Cons } from 'PromotedDataConstructors/List';
+import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Last, Cons } from 'PromotedDataConstructors/List';
 import { hnil } from 'HList';
 import { Z, S } from 'PromotedDataConstructors/Nat';
 import { Stuck } from 'Utils/Stuck';
 import { Apply } from 'Utils/Apply';
 import { HKT } from 'Utils/HKT';
+import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
+import { Join } from 'Utils/Join';
 
 export type AnyFunction = (...args: never) => unknown;
 
-//@FIXME: Wrong typing, can't cover all function.
-export type Curried<f extends AnyFunction> = {
-  base: Apply<Length, Parameters<f>> extends Z ? ReturnType<f> : ((...args: Parameters<f>) => ReturnType<f>);
-  recursiveStep: Parameters<f> extends infer params ?
-    params extends AnyList ?
-      & ((...args: params) => ReturnType<f>)
-      & ((...args: [Apply<Head, params>]) => Curried<(...args: Apply<Tail, params>) => ReturnType<f>>)
-      & ((...args: Apply<Cons, [Apply<Head, params>, [Apply<Head, Apply<Tail, params>>]]>) =>
-      Curried<(...args: Apply<Tail, Apply<Tail, params>>) => ReturnType<f>>)
+type Diff<A, B> = {
+  base: B;
+  recursiveStep: Head<A> extends Head<B> ?
+    Diff<Tail<A>, Tail<B>>
+    : Cons<[Head<B>, Diff<Tail<A>, Tail<B>>]>
+}[Length<A> extends Z ? 'base' : A extends B ? B extends A ? 'base' : 'recursiveStep' : 'recursiveStep'];
+
+interface _Lambda_2C<curriedParams> extends HKT {
+  result: this['param'] extends AnyList ?
+    curriedParams extends [infer originalParams, infer returnType] ?
+      Diff<this['param'], originalParams> extends infer A ?
+        A extends AnyList ?
+          (...args: this['param']) => Curried<(...args: A) => returnType>
+          : Stuck
+        : Stuck
       : Stuck
     : Stuck;
-}[Apply<Length, Parameters<f>> extends Z | S<Z> ? 'base' : 'recursiveStep'];
+}
+interface _Lambda_2 extends HKT {
+  result: _Lambda_2C<this['param']>;
+}
+type Lambda_2<param = UnInitialized> = DeriveGeneric<_Lambda_2, param>;
+
+interface Lambda_1 extends HKT {
+  result: this['param'] extends [infer acc, infer type] ?
+    Snoc<[
+      Snoc<[type, Last<acc>]>
+      ,
+      acc
+    ]>
+    : Stuck;
+}
+type MagicalSlice<list extends AnyList> = Reduce<[
+  Lambda_1,
+  [[Head<list>]],
+  Tail<list>
+]>;
+
+interface _Curried extends HKT {
+  result: this['param'] extends infer f ?
+    f extends AnyFunction ? {
+        base: Length<Parameters<f>> extends Z ? ReturnType<f> : f;
+        recursiveStep: Parameters<f> extends infer params ?
+          params extends AnyList ?
+            Reduce<[
+              Join,
+              unknown,
+              Map<[
+                Lambda_2<[params, ReturnType<f>]>
+                ,
+                MagicalSlice<params>
+              ]>
+            ]>
+            : Stuck
+          : Stuck;
+      }[Length<Parameters<f>> extends Z | S<Z> ? 'base' : 'recursiveStep']
+      : Stuck
+    : Stuck;
+}
+type Curried<param = UnInitialized> = DeriveGeneric<_Curried, param>;
 
 export function curry<f extends AnyFunction>(f: f): Curried<f> {
   function _curry<applied extends AnyList>(applied: applied): Curried<f> {
