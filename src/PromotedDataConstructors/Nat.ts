@@ -3,6 +3,7 @@ import { Stuck } from 'Utils/Stuck';
 import { MakeVoid } from 'Utils/MakeVoid';
 import { HKT } from 'Utils/HKT';
 import { Apply } from 'Utils/Apply';
+import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
 
 export interface Nat extends MakeVoid<'Nat'> {}
 type _Z = MakeVoid<'Z'> & Nat;
@@ -10,11 +11,12 @@ export interface Z extends _Z {}
 type _S<N extends Nat> = PhantomTypeParameter<'S/N', N> & Nat
 export interface S<N extends Nat> extends _S<N> {}
 
-export interface IsZ extends HKT {
+interface _IsZ extends HKT {
   result: this['param'] extends true ? false : true;
 }
+export type IsZ<param = UnInitialized> = DeriveGeneric<_IsZ, param>;
 
-export interface Add extends HKT {
+export interface _Add extends HKT {
   result: this['param'] extends [infer X, infer Y] ?
       X extends Nat ?
         Y extends Nat ?
@@ -26,3 +28,4 @@ export interface Add extends HKT {
       : Stuck
     : Stuck;
 }
+export type Add<param = UnInitialized> = DeriveGeneric<_Add, param>;
