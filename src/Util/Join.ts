@@ -1,6 +1,6 @@
-import { HKT } from 'Utils/HKT';
-import { Stuck } from 'Utils/Stuck';
-import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
+import { HKT } from 'Util/HKT';
+import { Stuck } from 'Util/Stuck';
+import { DeriveGeneric, UnInitialized } from 'Util/UnInitialized';
 
 interface _Join extends HKT {
   result: this['param'] extends [infer A, infer B] ?

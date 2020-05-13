@@ -1,9 +1,9 @@
-import { PhantomTypeParameter } from 'Utils/PhantomTypeParameter';
-import { Stuck } from 'Utils/Stuck';
-import { MakeVoid } from 'Utils/MakeVoid';
-import { HKT } from 'Utils/HKT';
-import { Apply } from 'Utils/Apply';
-import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
+import { PhantomTypeParameter } from 'Util/PhantomTypeParameter';
+import { Stuck } from 'Util/Stuck';
+import { MakeVoid } from 'Util/MakeVoid';
+import { HKT } from 'Util/HKT';
+import { Apply } from 'Util/Apply';
+import { DeriveGeneric, UnInitialized } from 'Util/UnInitialized';
 
 export interface Nat extends MakeVoid<'Nat'> {}
 type _Z = MakeVoid<'Z'> & Nat;

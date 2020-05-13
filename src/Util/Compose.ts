@@ -1,6 +1,6 @@
-import { Stuck } from 'Utils/Stuck'
-import { HKT } from 'Utils/HKT';
-import { Apply } from 'Utils/Apply';
+import { Stuck } from 'Util/Stuck'
+import { HKT } from 'Util/HKT';
+import { Apply } from 'Util/Apply';
 
 export interface Composed<F extends HKT, G extends HKT> extends HKT {
   result: Apply<F, Apply<G, this['param']>>;

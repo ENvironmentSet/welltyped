@@ -1,11 +1,11 @@
 import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Last, Cons } from 'Promoted/List';
 import { hnil } from 'HList';
 import { Z, S } from 'Promoted/Nat';
-import { Stuck } from 'Utils/Stuck';
-import { Apply } from 'Utils/Apply';
-import { HKT } from 'Utils/HKT';
-import { DeriveGeneric, UnInitialized } from 'Utils/UnInitialized';
-import { Join } from 'Utils/Join';
+import { Stuck } from 'Util/Stuck';
+import { Apply } from 'Util/Apply';
+import { HKT } from 'Util/HKT';
+import { DeriveGeneric, UnInitialized } from 'Util/UnInitialized';
+import { Join } from 'Util/Join';
 
 export type AnyFunction = (...args: never) => unknown;
 
