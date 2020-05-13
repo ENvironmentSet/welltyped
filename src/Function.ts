@@ -5,7 +5,7 @@ import { Stuck } from 'Util/Stuck';
 import { Apply } from 'Util/Apply';
 import { HKT } from 'Util/HKT';
 import { DeriveGeneric, UnInitialized } from 'Util/UnInitialized';
-import { Join } from 'Util/Join';
+import { Intersection } from 'Util/Intersection';
 
 export type AnyFunction = (...args: never) => unknown;
 
@@ -54,7 +54,7 @@ interface _Curried extends HKT {
         recursiveStep: Parameters<f> extends infer params ?
           params extends AnyList ?
             Reduce<[
-              Join,
+              Intersection,
               unknown,
               Map<[
                 Lambda_2<[params, ReturnType<f>]>
