@@ -64,6 +64,13 @@ interface _Cons extends HKT {
 }
 export type Cons<param = UnInitialized> = DeriveGeneric<_Cons, param>;
 
+interface _Snoc extends HKT {
+  result: this['param'] extends [infer car, infer cdr] ?
+    Reverse<Cons<[car, Reverse<cdr>]>>
+    : Stuck;
+}
+export type Snoc<param = UnInitialized> = DeriveGeneric<_Snoc, param>;
+
 interface _Filter extends HKT {
   result: this['param'] extends [infer predicate, infer list] ? {
     base: [],
