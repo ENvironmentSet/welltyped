@@ -6,14 +6,14 @@ import { HKT, Apply } from './Primitive/HKT';
 import { DeriveGeneric, UnInitialized } from './Primitive/UnInitialized';
 import { Intersection } from './Promoted/Intersection';
 import { Flip } from './HKT/Flip';
+import { If } from './Promoted/Bool';
+import { Eq } from './Promoted/Eq';
 
 export type AnyFunction = (...args: never) => unknown;
 
 type FilterByMatch<A, B> = {
   base: B;
-  recursiveStep: Head<A> extends (Head<B> & Head<A>) ?
-    FilterByMatch<Tail<A>, Tail<B>>
-    : Cons<[Head<B>, FilterByMatch<Tail<A>, Tail<B>>]>
+  recursiveStep: If<[Eq<[Head<A>, Head<B>]>, FilterByMatch<Tail<A>, Tail<B>>, Cons<[Head<B>, FilterByMatch<Tail<A>, Tail<B>>]>]>
 }[Length<A> extends Z ? 'base' : 'recursiveStep'];
 
 interface ExtractNArgFunction<functionSignature extends AnyFunction> extends HKT {
