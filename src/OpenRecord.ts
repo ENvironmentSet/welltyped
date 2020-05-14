@@ -69,11 +69,13 @@ export function get<record extends AnyList, key extends PropertyKey>(
 interface _Set extends HKT {
   result: this['param'] extends [infer key, infer value, infer record] ?
     key extends PropertyKey ? {
-        base: never;
-        recursiveStep: Head<record> extends [infer keyOfHead, infer _] ?
+        base: OpenRecord<[]>;
+        recursiveStep: Head<record> extends [infer keyOfHead, infer valueOfHead] ?
           Eq<[key, keyOfHead]> extends true ?
             OpenRecord<Cons<[[key, value], Tail<record>]>>
-            : Set<[key, value, Tail<record>]>
+            : Set<[key, value, Tail<record>]> extends OpenRecord<infer updatedLast> ?
+            OpenRecord<Cons<[[keyOfHead, valueOfHead], updatedLast]>>
+              : Stuck
           : Stuck;
       }[record extends [] ? 'base' : 'recursiveStep']
       : Stuck
