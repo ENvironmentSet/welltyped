@@ -5,7 +5,7 @@ import { Stuck } from 'Primitive/Stuck';
 import { Apply } from 'Util/Apply';
 import { HKT } from 'Primitive/HKT';
 import { DeriveGeneric, UnInitialized } from 'Primitive/UnInitialized';
-import { Intersection } from 'Util/Intersection';
+import { Intersection } from 'Promoted/Intersection';
 
 export type AnyFunction = (...args: never) => unknown;
 
