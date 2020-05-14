@@ -1,5 +1,5 @@
-import { HKT } from 'Util/HKT';
-import { Stuck } from 'Util/Stuck';
+import { HKT } from 'Primitive/HKT';
+import { Stuck } from 'Primitive/Stuck';
 import { Apply } from 'Util/Apply';
 import { Reverse } from 'Promoted/List';
 

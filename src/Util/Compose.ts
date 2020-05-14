@@ -1,5 +1,5 @@
-import { Stuck } from 'Util/Stuck'
-import { HKT } from 'Util/HKT';
+import { Stuck } from 'Primitive/Stuck'
+import { HKT } from 'Primitive/HKT';
 import { Apply } from 'Util/Apply';
 
 export interface Composed<F extends HKT, G extends HKT> extends HKT {

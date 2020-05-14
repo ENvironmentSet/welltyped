@@ -1,10 +1,10 @@
-import { Stuck } from 'Util/Stuck';
-import { Type } from 'Util/Type';
-import { HKT } from 'Util/HKT';
+import { Stuck } from 'Primitive/Stuck';
+import { Type } from 'Primitive/Type';
+import { HKT } from 'Primitive/HKT';
 import { Apply } from 'Util/Apply';
 import { If } from 'Promoted/Bool';
 import { Z, S, Nat } from 'Promoted/Nat';
-import { DeriveGeneric, UnInitialized } from 'Util/UnInitialized';
+import { DeriveGeneric, UnInitialized } from 'Primitive/UnInitialized';
 
 export type AnyList = Array<Type>;
 

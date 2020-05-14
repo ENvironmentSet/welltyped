@@ -1,6 +1,6 @@
-import { HKT } from 'Util/HKT';
-import { Stuck } from 'Util/Stuck';
-import { UnInitialized, DeriveGeneric } from 'Util/UnInitialized';
+import { HKT } from 'Primitive/HKT';
+import { Stuck } from 'Primitive/Stuck';
+import { UnInitialized, DeriveGeneric } from 'Primitive/UnInitialized';
 
 interface _If extends HKT {
   result: this['param'] extends [infer condition, infer then, infer orElse] ?
