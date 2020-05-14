@@ -1,7 +1,7 @@
-import { HKT, Apply } from 'Primitive/HKT';
-import { Stuck } from 'Primitive/Stuck';
-import { Reverse } from 'Promoted/List';
-import { DeriveGeneric, UnInitialized } from 'Primitive/UnInitialized';
+import { HKT, Apply } from '../Primitive/HKT';
+import { Stuck } from '../Primitive/Stuck';
+import { Reverse } from '../Promoted/List';
+import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
 
 interface Flipped<f extends HKT> extends HKT {
   result: Apply<f, Apply<Reverse, this['param']>>;

@@ -1,4 +1,4 @@
-import { Cons, Head, AnyList, Tail, Concat } from 'Promoted/List';
+import { Cons, Head, AnyList, Tail, Concat } from './Promoted/List';
 
 export const hnil = [] as [];
 export function hcons<type, tlist extends AnyList>(x: type, xs: tlist): Cons<[type, tlist]> {

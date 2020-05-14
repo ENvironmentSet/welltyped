@@ -1,11 +1,11 @@
-import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Init, Cons, Scan } from 'Promoted/List';
-import { hnil } from 'HList';
-import { Z, S } from 'Promoted/Nat';
-import { Stuck } from 'Primitive/Stuck';
-import { HKT, Apply } from 'Primitive/HKT';
-import { DeriveGeneric, UnInitialized } from 'Primitive/UnInitialized';
-import { Intersection } from 'Promoted/Intersection';
-import { Flip } from 'HKT/Flip';
+import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Init, Cons, Scan } from './Promoted/List';
+import { hnil } from './HList';
+import { Z, S } from './Promoted/Nat';
+import { Stuck } from './Primitive/Stuck';
+import { HKT, Apply } from './Primitive/HKT';
+import { DeriveGeneric, UnInitialized } from './Primitive/UnInitialized';
+import { Intersection } from './Promoted/Intersection';
+import { Flip } from './HKT/Flip';
 
 export type AnyFunction = (...args: never) => unknown;
 

@@ -1,5 +1,5 @@
-import { Type } from 'Primitive/Type';
-import { Stuck } from 'Primitive/Stuck';
+import { Type } from '../Primitive/Type';
+import { Stuck } from '../Primitive/Stuck';
 
 export interface HKT {
   param: Type;
