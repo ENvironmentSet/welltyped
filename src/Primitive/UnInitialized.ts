@@ -1,6 +1,5 @@
 import { MakeVoid } from 'Primitive/MakeVoid';
-import { HKT } from 'Primitive/HKT';
-import { Apply } from 'Util/Apply';
+import { HKT, Apply } from 'Primitive/HKT';
 
 export interface UnInitialized extends MakeVoid<'UnInitialized'> {}
 

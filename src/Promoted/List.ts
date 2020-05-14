@@ -1,7 +1,6 @@
 import { Stuck } from 'Primitive/Stuck';
 import { Type } from 'Primitive/Type';
-import { HKT } from 'Primitive/HKT';
-import { Apply } from 'Util/Apply';
+import { HKT, Apply } from 'Primitive/HKT';
 import { If } from 'Promoted/Bool';
 import { Z, S, Nat } from 'Promoted/Nat';
 import { DeriveGeneric, UnInitialized } from 'Primitive/UnInitialized';

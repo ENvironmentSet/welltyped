@@ -1,6 +1,5 @@
-import { HKT } from 'Primitive/HKT';
+import { HKT, Apply } from 'Primitive/HKT';
 import { Stuck } from 'Primitive/Stuck';
-import { Apply } from 'Util/Apply';
 import { Reverse } from 'Promoted/List';
 
 interface Flipped<f extends HKT> extends HKT {
