@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0-alpha.3",
+  "version": "0.0.0-alpha.5",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -7,24 +7,8 @@
     "dist",
     "src"
   ],
-  "engines": {
-    "node": ">=10"
-  },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "prepare": "tsdx build"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+    "build": "tsdx build"
   },
   "name": "welltyped",
   "author": "ENvironmentSet <herryseo1@gmail.com> (https://github.com/ENvironmentSet)",
