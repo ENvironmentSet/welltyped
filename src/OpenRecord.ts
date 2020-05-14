@@ -31,7 +31,7 @@ interface _IsMember extends HKT {
 }
 export type IsMember<param = UnInitialized> = DeriveGeneric<_IsMember, param>;
 
-// @ts-ignore
+//@ts-expect-error
 export function insert<
   //@TODO: Abstract If<[IsMember<[key, record]>, never, unknown] out constraints
   record extends AnyList, key extends PropertyKey, value extends If<[IsMember<[key, record]>, never, unknown]>
@@ -62,7 +62,7 @@ export function get<record extends AnyList, key extends PropertyKey>(
   key: key,
   record: OpenRecord<record>
 ): Get<[key, record]> {
-  //@ts-ignore
+  //@ts-expect-error
   return record[key];
 }
 
@@ -83,7 +83,7 @@ interface _Set extends HKT {
 }
 type Set<param = UnInitialized> = DeriveGeneric<_Set, param>;
 
-//@ts-ignore
+//@ts-expect-error
 export function set<
   record extends AnyList, key extends PropertyKey, value extends If<[IsMember<[key, record]>, unknown, never]>
   >(
@@ -91,7 +91,7 @@ export function set<
   value: value,
   openRecord: OpenRecord<record>
 ): Set<[key, value, record]> {
-  //@ts-ignore
+  //@ts-expect-error
   return unsafeMakeOpenRecord({ ...openRecord, ...{ [key]: value } });
 }
 
@@ -102,6 +102,6 @@ export function modify<
     f: (x: Get<[key, record]>) => R,
     openRecord: OpenRecord<record>
 ): Set<[key, R, record]> {
-  //@ts-ignore
+  //@ts-expect-error
   return set(key, f(get(key, openRecord)), openRecord);
 }

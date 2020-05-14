@@ -55,7 +55,7 @@ type Curried<param = UnInitialized> = DeriveGeneric<_Curried, param>;
 
 export function curry<f extends AnyFunction>(f: f): Curried<f> {
   function _curry<applied extends AnyList>(applied: applied): Curried<f> {
-    //@ts-ignore @TODO: Type this code
+    //@ts-expect-error @TODO: Type this code
     return (...args) => args.length + applied.length < f.length ? _curry(applied.concat(args)) : f(...(applied.concat(args)));
   }
 
