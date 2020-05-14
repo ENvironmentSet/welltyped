@@ -3,7 +3,6 @@ import { Cons, AnyList, Head, Tail } from './Promoted/List';
 import { HKT } from './Primitive/HKT';
 import { Stuck } from './Primitive/Stuck';
 import { DeriveGeneric, UnInitialized } from './Primitive/UnInitialized';
-import { If } from './Promoted/Bool';
 import { Eq } from './Promoted/Eq';
 
 type _OpenRecord<record> = object & PhantomTypeParameter<'OpenRecord/record', record>;
@@ -31,10 +30,9 @@ interface _IsMember extends HKT {
 }
 export type IsMember<param = UnInitialized> = DeriveGeneric<_IsMember, param>;
 
-//@ts-expect-error
 export function insert<
   //@TODO: Abstract If<[IsMember<[key, record]>, never, unknown] out constraints
-  record extends AnyList, key extends PropertyKey, value extends If<[IsMember<[key, record]>, never, unknown]>
+  record extends AnyList, key extends PropertyKey, value extends (IsMember<[key, record]> extends true ? never : unknown)
   >(
   key: key,
   value: value,
@@ -83,9 +81,8 @@ interface _Set extends HKT {
 }
 type Set<param = UnInitialized> = DeriveGeneric<_Set, param>;
 
-//@ts-expect-error
 export function set<
-  record extends AnyList, key extends PropertyKey, value extends If<[IsMember<[key, record]>, unknown, never]>
+  record extends AnyList, key extends PropertyKey, value extends (IsMember<[key, record]> extends true ? unknown : never)
   >(
   key: key,
   value: value,
