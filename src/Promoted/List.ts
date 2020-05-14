@@ -117,6 +117,21 @@ interface _Reduce extends HKT {
 }
 export type Reduce<param = UnInitialized> = DeriveGeneric<_Reduce, param>;
 
+interface _Scan extends HKT {
+  result: this['param'] extends [infer f, infer base, infer list] ? {
+      base: [base],
+      recursiveStep: f extends HKT ?
+        list extends AnyList ?
+          Apply<f, [base, Head<list>]> extends infer head ?
+            Cons<[head, Scan<[f, head, Tail<list>]>]>
+            : Stuck
+          : Stuck
+        : Stuck
+    }[If<[IsEmpty<list>, 'base', 'recursiveStep']>]
+    : Stuck;
+}
+export type Scan<param = UnInitialized> = DeriveGeneric<_Scan, param>;
+
 interface _Concat extends HKT {
   result: this['param'] extends [infer xs, infer ys] ? {
       base: ys,
