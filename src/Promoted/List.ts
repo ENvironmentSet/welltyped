@@ -119,7 +119,7 @@ export type Reduce<param = UnInitialized> = DeriveGeneric<_Reduce, param>;
 
 interface _Scan extends HKT {
   result: this['param'] extends [infer f, infer base, infer list] ? {
-      base: [base],
+      base: [base], //@FIXME: Make starting value become head of result
       recursiveStep: f extends HKT ?
         list extends AnyList ?
           Apply<f, [base, Head<list>]> extends infer head ?
