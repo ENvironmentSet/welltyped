@@ -27,6 +27,6 @@ export function concat<xs extends AnyList, ys extends AnyList>(xs: xs, ys: ys): 
 
 export function reduce<tlist extends AnyList, R>(f: (x: Reduce<[Union, R, tlist]>, acc: R) => R, base: R, xs: tlist): R {
   if (xs.length === 0) return base;
-  //@ts-expect-error
+  //@ts-ignore
   else return reduce(f, f(head(xs), base), tail(xs));
 }

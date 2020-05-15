@@ -60,7 +60,7 @@ export function get<record extends AnyList, key extends PropertyKey>(
   key: key,
   record: OpenRecord<record>
 ): Get<[key, record]> {
-  //@ts-expect-error
+  //@ts-ignore
   return record[key];
 }
 
@@ -88,7 +88,7 @@ export function set<
   value: value,
   openRecord: OpenRecord<record>
 ): Set<[key, value, record]> {
-  //@ts-expect-error
+  //@ts-ignore
   return unsafeMakeOpenRecord({ ...openRecord, ...{ [key]: value } });
 }
 
@@ -99,6 +99,6 @@ export function modify<
     f: (x: Get<[key, record]>) => R,
     openRecord: OpenRecord<record>
 ): Set<[key, R, record]> {
-  //@ts-expect-error
+  //@ts-ignore
   return set(key, f(get(key, openRecord)), openRecord);
 }
