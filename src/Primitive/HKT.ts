@@ -1,5 +1,5 @@
-import { Type } from '../Primitive/Type';
-import { Stuck } from '../Primitive/Stuck';
+import { Type } from './Type';
+import { Stuck } from './Stuck';
 
 export interface HKT {
   param: Type;
@@ -8,7 +8,3 @@ export interface HKT {
 
 export type Apply<f extends HKT, x, fallback = Stuck> //@TODO: Make Apply non-primitive
   = (f & { param: x })['result'] | fallback;
-
-import { UnInitialized, DeriveGeneric } from '../Primitive/UnInitialized';
-
-export { Stuck, UnInitialized, DeriveGeneric };
