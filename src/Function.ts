@@ -5,7 +5,7 @@ import { Stuck } from './Primitive/Stuck';
 import { HKT, Apply } from './Primitive/HKT';
 import { DeriveGeneric, UnInitialized } from './Primitive/UnInitialized';
 import { Intersection } from './Promoted/Intersection';
-import { Flip } from './HKT/Flip';
+import { Flip } from './Promoted/Flip';
 import { If } from './Promoted/Bool';
 import { Eq } from './Promoted/Eq';
 
