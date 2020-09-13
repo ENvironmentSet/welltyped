@@ -1,0 +1,6 @@
+macros = 'src/macros.ts'
+
+[[packages]]
+location = 'src'
+entry = 'index.ts'
+environment = 'anywhere'
