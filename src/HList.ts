@@ -1,5 +1,4 @@
-import { Cons, Head, AnyList, Tail, Concat, Reduce } from './Promoted/List';
-import { Union } from './Promoted/Union';
+import { Cons, Head, AnyList, Tail, Concat } from './Promoted/List';
 
 export const hnil = [] as [];
 export function hcons<type, tlist extends AnyList>(x: type, xs: tlist): Cons<[type, tlist]> {
@@ -23,10 +22,4 @@ export function tail<tlist extends AnyList>([_, ...xs]: tlist): Tail<tlist> {
 
 export function concat<xs extends AnyList, ys extends AnyList>(xs: xs, ys: ys): Concat<[xs, ys]> {
   return xs.concat(ys) as Concat<[xs, ys]>;
-}
-
-export function reduce<tlist extends AnyList, R>(f: (x: Reduce<[Union, R, tlist]>, acc: R) => R, base: R, xs: tlist): R {
-  if (xs.length === 0) return base;
-  //@ts-ignore
-  else return reduce(f, f(head(xs), base), tail(xs));
 }
