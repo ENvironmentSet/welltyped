@@ -12,4 +12,4 @@ export type If<param = UnInitialized> = DeriveGeneric<_If, param>;
 interface _Not extends HKT {
   result: this['param'] extends true ? false : true;
 }
-export type Not<param> = DeriveGeneric<_Not, param>;
+export type Not<param = UnInitialized> = DeriveGeneric<_Not, param>;
