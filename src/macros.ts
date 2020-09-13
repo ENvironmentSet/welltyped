@@ -100,7 +100,8 @@ function exportHKT(name: Identifier): Statement {
 }
 
 export const macros = {
-  // HKT must be used with import { HKT, Stuck, UnInitialized, DeriveGeneric } from './Primitive/HKT';
+  // HKT must be used with
+  // import { HKT, Stuck, UnInitialized, DeriveGeneric } from './Primitive/HKT';
   HKT: DecoratorMacro((ctx, statement) => {//@TODO: Pattern match?
     if (!isTypeAliasDeclaration(statement))
       return ctx.TsNodeErr(statement, 'Not a type alias', `The "HKT" macro isn't being used correctly.`,);
