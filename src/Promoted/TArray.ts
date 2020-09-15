@@ -35,7 +35,7 @@ interface _Last extends HKT {
       L extends TArray ?
         If<[IsEmpty<this['param']>, Stuck, Last<Tail<L>>]>
         : Stuck
-    : Stuck
+    : Stuck;
 }
 export type Last<param = UnInitialized> = DeriveGeneric<_Last, param>;
 
@@ -49,7 +49,7 @@ interface _Cons extends HKT {
     cdr extends TArray ?
       [car, ...cdr]
       : Stuck
-    : Stuck
+    : Stuck;
 }
 export type Cons<param = UnInitialized> = DeriveGeneric<_Cons, param>;
 
@@ -61,3 +61,14 @@ interface _Map extends HKT {
     : Stuck;
 }
 export type Map<param = UnInitialized> = DeriveGeneric<_Map, param>;
+
+interface _Concat extends HKT {
+  result: this['param'] extends [infer x, infer y] ?
+    x extends TArray ?
+      y extends TArray ?
+        [...x, ...y]
+        : Stuck
+      : Stuck
+    : Stuck;
+}
+export type Concat<param = UnInitialized> = DeriveGeneric<_Concat, param>;
