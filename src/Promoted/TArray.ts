@@ -3,9 +3,13 @@ import { TType } from '../Primitive/TType';
 import { HKT, Apply } from '../Primitive/HKT';
 import { If } from './Control';
 import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
+import { TNumber } from './TNumber';
 
 export type TArray = Array<TType>;
 export type Empty = [];
+
+export type MakeTArray<length extends TNumber, initType = unknown, result extends TArray = Empty>
+  = Length<result> extends length ? result : MakeTArray<length, initType, [initType, ...result]>;
 
 interface _IsEmpty extends HKT {
   result: this['param'] extends Empty ? true : false;
