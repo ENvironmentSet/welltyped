@@ -1,4 +1,6 @@
-import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Init, Cons, Scan } from './Promoted/List';
+//@FIXME: Refactor this
+
+import { Length, Reduce, AnyList, Map, Head, Tail, Snoc, Init, Cons, Scan } from './Promoted/TArray';
 import { hnil } from './HList';
 import { Z, S } from './Promoted/Nat';
 import { Stuck } from './Primitive/Stuck';
