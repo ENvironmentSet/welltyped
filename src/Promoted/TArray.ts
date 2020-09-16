@@ -7,7 +7,7 @@ import { TNumber } from './TNumber';
 export type TArray = Array<TType>;
 export type Empty = [];
 
-export type MakeTArray<length extends TNumber, initType = unknown, result extends TArray = []>
+export type MakeTArray<length extends TNumber, initType = unknown, result extends TArray = Empty>
   = Length<result> extends length ? result : MakeTArray<length, initType, [initType, ...result]>;
 
 export type IsEmpty<l extends TArray> = Length<l> extends 0 ? true : false;
