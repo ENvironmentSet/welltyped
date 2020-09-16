@@ -31,6 +31,13 @@ export interface Tail_ extends HKT {
   result: Tail<this['l']>;
 }
 
+export type Init<l extends TArray> = l extends [...infer init, unknown] ? init : Stuck;
+export interface Init_ extends HKT {
+  params: [TArray]
+  l: this['params'][0];
+  result: Init<this['l']>;
+}
+
 export type Last<l extends TArray> = l extends [] ? Stuck : Length<l> extends 1 ? Head<l> : Last<Tail<l>>;
 export interface Last_ extends HKT {
   params: [TArray]
