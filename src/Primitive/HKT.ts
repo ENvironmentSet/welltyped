@@ -2,9 +2,9 @@ import { TType } from './TType';
 import { Stuck } from './Stuck';
 
 export interface HKT {
-  param: TType;
+  params: TType[];
   result: TType;
 }
 
-export type Apply<f extends HKT, x, fallback = Stuck> //@TODO: Make Apply non-primitive
-  = (f & { param: x })['result'] | fallback;
+export type Apply<f extends HKT, tParams extends TType[], fallback extends TType = Stuck>
+  = (f & { params: tParams })['result'] | fallback;

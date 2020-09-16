@@ -1,10 +1,12 @@
 import { HKT } from '../Primitive/HKT';
-import { Stuck } from '../Primitive/Stuck';
-import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
+import { TType } from '../Primitive/TType';
+import { TBoolean } from './TBoolean'
 
-interface _If extends HKT {
-  result: this['param'] extends [infer condition, infer then, infer orElse] ?
-    condition extends true ? then : orElse
-    : Stuck;
+export type If<condition extends boolean, then, orElse> = condition extends true ? then : orElse;
+export interface If_ extends HKT {
+  params: [TBoolean, TType, TType];
+  condition: this['params'][0];
+  then: this['params'][1];
+  orElse: this['params'][2];
+  result: If<this['condition'], this['then'], this['orElse']>;
 }
-export type If<param = UnInitialized> = DeriveGeneric<_If, param>;

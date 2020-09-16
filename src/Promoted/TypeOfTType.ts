@@ -1,10 +1,10 @@
 import { HKT } from '../Primitive/HKT';
-import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
+import { TType } from '../Primitive/TType';
 
-interface _TypeOfTTypeC<ttype> extends HKT {
-  result: this['param'] extends ttype ? true : false;
+export type TypeOfTType<a extends TType, b extends TType> = a extends b ? true : false;
+export interface TypeOfTType_ extends HKT {
+  params: [TType, TType];
+  a: this['params'][0];
+  b: this['params'][1];
+  result: TypeOfTType<this['a'], this['b']>;
 }
-interface _TypeOfTType extends HKT {
-  result: _TypeOfTTypeC<this['param']>
-}
-export type TypeOfTType<param = UnInitialized> = DeriveGeneric<_TypeOfTType, param>;

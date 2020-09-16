@@ -1,10 +1,10 @@
 import { HKT } from '../Primitive/HKT';
-import { Stuck } from '../Primitive/Stuck';
-import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
+import { TType } from '../Primitive/TType';
 
-interface _Intersection extends HKT {
-  result: this['param'] extends [infer a, infer b] ?
-    a & b
-    : Stuck;
+export type Intersection<a, b> = a & b;
+export interface Intersection_ extends HKT {
+  params: [TType, TType]
+  a: this['params'][0];
+  b: this['params'][1];
+  result: Intersection<this['a'], this['b']>;
 }
-export type Intersection<param = UnInitialized> = DeriveGeneric<_Intersection, param>;

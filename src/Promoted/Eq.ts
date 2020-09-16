@@ -1,16 +1,10 @@
 import { HKT } from '../Primitive/HKT';
-import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
+import { TType } from '../Primitive/TType';
 
-interface _EqC<a> extends HKT {
-  result: Eq<[a, this['param']]>;
+export type Eq<a, b> = a extends b ? b extends a ? true : false : false;
+export interface Eq_ extends HKT {
+  params: [TType, TType];
+  a: this['params'][0];
+  b: this['params'][1];
+  result: Eq<this['a'], this['b']>;
 }
-interface _Eq extends HKT {
-  result: this['param'] extends [infer a, infer b] ?
-    a extends b ?
-      b extends a ?
-        true
-        : false
-      : false
-    : _EqC<this['param']>;
-}
-export type Eq<param = UnInitialized> = DeriveGeneric<_Eq, param>;

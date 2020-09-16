@@ -2,73 +2,72 @@ import { Stuck } from '../Primitive/Stuck';
 import { TType } from '../Primitive/TType';
 import { HKT, Apply } from '../Primitive/HKT';
 import { If } from './Control';
-import { DeriveGeneric, UnInitialized } from '../Primitive/UnInitialized';
 import { TNumber } from './TNumber';
 
 export type TArray = Array<TType>;
 export type Empty = [];
 
-export type MakeTArray<length extends TNumber, initType = unknown, result extends TArray = Empty>
+export type MakeTArray<length extends TNumber, initType = unknown, result extends TArray = []>
   = Length<result> extends length ? result : MakeTArray<length, initType, [initType, ...result]>;
 
-interface _IsEmpty extends HKT {
-  result: this['param'] extends Empty ? true : false;
+export type IsEmpty<l extends TArray> = Length<l> extends 0 ? true : false;
+export interface IsEmpty_ extends HKT {
+  params: [TArray]
+  l: this['params'][0];
+  result: IsEmpty<this['l']>;
 }
-export type IsEmpty<param = UnInitialized> = DeriveGeneric<_IsEmpty, param>;
 
-interface _Head extends HKT {
-  result: this['param'] extends TArray ? If<[IsEmpty<this['param']>, Stuck, this['param'][0]]> : Stuck;
+export type Head<l extends TArray> = If<IsEmpty<l>, Stuck, l[0]>;
+export interface Head_ extends HKT {
+  params: [TArray]
+  l: this['params'][0];
+  result: Head<this['l']>;
 }
-export type Head<param = UnInitialized> = DeriveGeneric<_Head, param>;
 
-interface _Tail extends HKT {
-  result: this['param'] extends TArray ?
-      this['param'] extends [unknown, ...infer tail] ?
-        tail
-        : Stuck
-    : Stuck;
+export type Tail<l extends TArray> = l extends [unknown, ...infer tail] ? tail : Stuck
+export interface Tail_ extends HKT {
+  params: [TArray]
+  l: this['params'][0];
+  result: Tail<this['l']>;
 }
-export type Tail<param = UnInitialized> = DeriveGeneric<_Tail, param>;
 
-interface _Last extends HKT {
-  result: this['param'] extends infer L ?
-      L extends TArray ?
-        If<[IsEmpty<this['param']>, Stuck, Last<Tail<L>>]>
-        : Stuck
-    : Stuck;
+export type Last<l extends TArray> = l extends [] ? Stuck : Length<l> extends 1 ? Head<l> : Last<Tail<l>>;
+export interface Last_ extends HKT {
+  params: [TArray]
+  l: this['params'][0];
+  result: Last<this['l']>;
 }
-export type Last<param = UnInitialized> = DeriveGeneric<_Last, param>;
 
-interface _Length extends HKT {
-  result: this['param'] extends TArray ? this['param']['length'] : Stuck
+//@FIXME: Can't return l['length'] directly, seems bug of TS 4.1
+export type Length<l extends TArray> = l['length'] extends infer N ? N extends TNumber ? N : Stuck : Stuck;
+export interface Length_ extends HKT {
+  params: [TArray]
+  l: this['params'][0];
+  result: Length<this['l']>;
 }
-export type Length<param = UnInitialized> = DeriveGeneric<_Length, param>;
 
-interface _Cons extends HKT {
-  result: this['param'] extends [infer car, infer cdr] ?
-    cdr extends TArray ?
-      [car, ...cdr]
-      : Stuck
-    : Stuck;
+export type Cons<car extends TType, cdr extends TArray> = [car, ...cdr];
+export interface Cons_ extends HKT {
+  params: [TType, TArray]
+  car: this['params'][0];
+  cdr: this['params'][1];
+  result: Cons<this['car'], this['cdr']>;
 }
-export type Cons<param = UnInitialized> = DeriveGeneric<_Cons, param>;
 
-interface _Map extends HKT {
-  result: this['param'] extends [infer f, infer list] ?
-    f extends HKT ?
-      If<[IsEmpty<list>, Empty, Cons<[Apply<f, Head<list>>, Map<[f, Tail<list>]>]>]>
-      : Stuck
-    : Stuck;
+//@FIXME: TS Bug: Using recursive type with 'If' sometime goes wrong.
+export type Map<f extends HKT, l extends TArray>
+  = IsEmpty<l> extends true ? Stuck : Cons<Apply<f, [Head<l>]>, Map<f, Tail<l>>>;
+export interface Map_ extends HKT {
+  params: [HKT, TArray];
+  f: this['params'][0];
+  l: this['params'][1];
+  result: Map<this['f'], this['l']>;
 }
-export type Map<param = UnInitialized> = DeriveGeneric<_Map, param>;
 
-interface _Concat extends HKT {
-  result: this['param'] extends [infer x, infer y] ?
-    x extends TArray ?
-      y extends TArray ?
-        [...x, ...y]
-        : Stuck
-      : Stuck
-    : Stuck;
+export type Concat<xs extends TArray, ys extends TArray> = [...xs, ...ys];
+export interface Concat_ extends HKT {
+  params: [TArray, TArray];
+  xs: this['params'][0];
+  ys: this['params'][1];
+  result: Concat<this['xs'], this['ys']>;
 }
-export type Concat<param = UnInitialized> = DeriveGeneric<_Concat, param>;
