@@ -1,5 +1,6 @@
-import { Head, Length, Tail } from './Promoted/TArray';
+import { Head, Length, Tail, TArray } from './Promoted/TArray';
 import { Eq } from './Promoted/Eq';
+import { Assert } from './Primitive/Assert';
 
 export type TFunction = (...args: never) => unknown;
 type ConstraintVariadicFunction<f extends TFunction>
@@ -8,7 +9,7 @@ type ConstraintVariadicFunction<f extends TFunction>
 export type Curried<f extends TFunction>
   = Length<Parameters<f>> extends 0 ?
     ReturnType<f>
-  : (x: Head<Parameters<f>>) => Curried<(...args: Tail<Parameters<f>>) => ReturnType<f>>;
+  : (x: Head<Parameters<f>>) => Curried<(...args: Assert<Tail<Parameters<f>>, TArray>) => ReturnType<f>>;
 
 function setFunctionLength<f>(f: f, length: number): f {
   return Object.defineProperty(f, 'length', { value: length });
