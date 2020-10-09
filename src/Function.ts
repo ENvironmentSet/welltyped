@@ -10,6 +10,7 @@ export type Curried<f extends TFunction>
   = Length<Parameters<f>> extends 0 ?
     ReturnType<f>
   : (x: Head<Parameters<f>>) => Curried<(...args: Assert<Tail<Parameters<f>>, TArray>) => ReturnType<f>>;
+//@FIXME(Assert): IDK Why typescript can't catch that result of type well if there is variadic element with conditional type.
 
 function setFunctionLength<f>(f: f, length: number): f {
   return Object.defineProperty(f, 'length', { value: length });
