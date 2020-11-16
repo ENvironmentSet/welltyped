@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0-alpha.5",
+  "version": "0.0.0-alpha.6",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/welltyped.esm.js",
