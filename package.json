@@ -2,6 +2,7 @@
   "version": "0.0.0-alpha.5",
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/welltyped.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -13,7 +14,6 @@
   "name": "welltyped",
   "author": "ENvironmentSet <herryseo1@gmail.com> (https://github.com/ENvironmentSet)",
   "description": "Collection of Dependently-typed stuff",
-  "module": "dist/welltyped.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ENvironmentSet/welltyped.git"
