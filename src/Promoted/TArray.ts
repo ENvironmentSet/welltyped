@@ -12,35 +12,35 @@ export type MakeTArray<length extends TNumber, initType = unknown, result extend
 
 export type IsEmpty<l extends TArray> = Length<l> extends 0 ? true : false;
 export interface IsEmpty_ extends HKT {
-  params: [TArray]
+  params: [TArray];
   l: this['params'][0];
   result: IsEmpty<this['l']>;
 }
 
 export type Head<l extends TArray> = If<IsEmpty<l>, Stuck, l[0]>;
 export interface Head_ extends HKT {
-  params: [TArray]
+  params: [TArray];
   l: this['params'][0];
   result: Head<this['l']>;
 }
 
 export type Tail<l extends TArray> = l extends [unknown, ...infer tail] ? tail : Stuck
 export interface Tail_ extends HKT {
-  params: [TArray]
+  params: [TArray];
   l: this['params'][0];
   result: Tail<this['l']>;
 }
 
 export type Init<l extends TArray> = l extends [...infer init, unknown] ? init : Stuck;
 export interface Init_ extends HKT {
-  params: [TArray]
+  params: [TArray];
   l: this['params'][0];
   result: Init<this['l']>;
 }
 
 export type Last<l extends TArray> = l extends [] ? Stuck : Length<l> extends 1 ? Head<l> : Last<Tail<l>>;
 export interface Last_ extends HKT {
-  params: [TArray]
+  params: [TArray];
   l: this['params'][0];
   result: Last<this['l']>;
 }
@@ -48,14 +48,14 @@ export interface Last_ extends HKT {
 //@FIXME: Can't return l['length'] directly, seems bug of TS 4.1
 export type Length<l extends TArray> = l['length'] extends infer N ? N extends TNumber ? N : Stuck : Stuck;
 export interface Length_ extends HKT {
-  params: [TArray]
+  params: [TArray];
   l: this['params'][0];
   result: Length<this['l']>;
 }
 
 export type Cons<car extends TType, cdr extends TArray> = [car, ...cdr];
 export interface Cons_ extends HKT {
-  params: [TType, TArray]
+  params: [TType, TArray];
   car: this['params'][0];
   cdr: this['params'][1];
   result: Cons<this['car'], this['cdr']>;
