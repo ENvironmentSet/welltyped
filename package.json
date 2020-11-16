@@ -19,9 +19,9 @@
     "url": "git+https://github.com/ENvironmentSet/welltyped.git"
   },
   "bugs": {
-    "url": "https://github.com/ENvironmentSet/Acropolis/issues"
+    "url": "https://github.com/ENvironmentSet/welltyped/issues"
   },
-  "homepage": "https://github.com/ENvironmentSet/Acropolis#readme",
+  "homepage": "https://github.com/ENvironmentSet/welltyped#readme",
   "devDependencies": {
     "@blainehansen/macro-ts": "^0.1.5",
     "husky": "^4.2.5",
