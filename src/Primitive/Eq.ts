@@ -1,5 +1,5 @@
-import { HKT } from '../Primitive/HKT';
-import { TType } from '../Primitive/TType';
+import { HKT } from './HKT';
+import { TType } from './TType';
 
 export type Eq<a, b> =
   (<T>() => T extends a ? never : never) extends (<T>() => T extends b ? never : never) ?
