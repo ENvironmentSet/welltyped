@@ -1,6 +1,6 @@
 import { TType } from './TType';
 import { Stuck } from './Stuck';
-import { Eq } from './Eq';
+import { Eq } from '../Operator/Eq';
 
 export interface HKT {
   params: TType[];
