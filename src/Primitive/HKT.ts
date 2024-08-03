@@ -1,10 +1,11 @@
-import { Type } from '../Primitive/Type';
-import { Stuck } from '../Primitive/Stuck';
+import { TType } from './TType';
+import { Stuck } from './Stuck';
+import { Eq } from '../Operator/Eq';
 
 export interface HKT {
-  param: Type;
-  result: Type;
+  params: TType[];
+  result: TType;
 }
 
-export type Apply<f extends HKT, x, fallback = Stuck> //@TODO: Make Apply non-primitive
-  = (f & { param: x })['result'] | fallback;
+export type Apply<f extends HKT, tParams extends TType[], fallback extends TType = Stuck>
+  = Eq<(f & { params: tParams })['result'], Stuck> extends true ? fallback : (f & { params: tParams })['result'];

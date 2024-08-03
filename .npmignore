@@ -1,0 +1,10 @@
+*.log
+.DS_Store
+node_modules
+.idea
+src
+docs
+.github
+CODE-OF-CONDUCT.md
+tsconfig.json
+.gitignore
